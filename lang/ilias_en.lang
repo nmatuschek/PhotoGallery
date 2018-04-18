@@ -73,3 +73,10 @@ sort_direction#:#Sort direction
 sort_direction_asc#:#Ascending
 sort_direction_desc#:#Descending
 album_sort_direction_info#:#Influences the sort direction of the sort type selected above
+start_slideshow#:#Start Slideshow
+slideshow_enabled#:#Enable Slideshow
+slideshow_enabled_info#:#If enabled, it is possible to start a slideshow
+slideshow_seconds#:#Display duration of an image
+slideshow_seconds_info#:#Seconds
+slideshow_repeat#:#Repeat Slideshow
+slideshow_repeat_info#:#If enabled, the slideshow repeats until it is stopped by the user

@@ -73,3 +73,10 @@ sort_direction#:#Sortierungs-Reihenfolge
 sort_direction_asc#:#Aufsteigend
 sort_direction_desc#:#Absteigend
 album_sort_direction_info#:#Die Sortierung wird aufsteigend oder absteigend vorgenommen
+start_slideshow#:#Diashow starten
+slideshow_enabled#:#Diashow aktivieren
+slideshow_enabled_info#:#Wenn aktiviert kann eine Diashow gestartet werden
+slideshow_seconds#:#Anzeigedauer eines Bildes
+slideshow_seconds_info#:#Sekunden
+slideshow_repeat#:#Diashow wiederholen
+slideshow_repeat_info#:#Wenn aktiviert, wird die Diashow solange wiederholt, bis sie durch den Benutzer gestoppt wird.  

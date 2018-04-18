@@ -52,3 +52,41 @@ require_once "./Customizing/global/plugins/Services/Repository/RepositoryObject/
 srObjAlbum::updateDB();
 $ilDB->manipulate("UPDATE sr_obj_pg_album SET sort_type = " . $ilDB->quote(srObjAlbum::SORT_TYPE_CREATE_DATE, 'text') . ", sort_direction = " . $ilDB->quote(srObjAlbum::SORT_TYPE_DIRECTION_ASC, 'text'));
 ?>
+<#6>
+<?php
+// 	ctrlstructure reload
+?>	
+<#7>
+<?php
+if (!$ilDB->tableExists('rep_robj_xpho_settings')) 
+{
+	$fields = array(
+		'ref_id' => array(
+			'type' => 'integer',
+			'length' => 4,
+			'notnull' => true
+		),
+		'slideshow_enabled' => array(
+			'type' => 'integer',
+			'length' => 1,
+			'notnull' => false
+		),
+		'slideshow_seconds' => array(
+			'type' => 'integer',
+			'length' => 4,
+			'notnull' => false,
+			'default' => 1
+		),
+		'slideshow_repeat' => array(
+			'type' => 'integer',
+			'length' => 1,
+			'notnull' => false,
+			'default' => 0 
+			
+		),
+	);
+	
+	$ilDB->createTable("rep_robj_xpho_settings", $fields);
+	$ilDB->addPrimaryKey("rep_robj_xpho_settings", array("ref_id"));
+}
+?>

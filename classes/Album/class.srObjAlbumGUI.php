@@ -105,6 +105,7 @@ class srObjAlbumGUI {
 			case 'delete':
 			case 'confirmDelete':
 			case 'download':
+			case 'startSlideShow':
 				$this->$cmd();
 				break;
 			case 'downloadAlbum':
@@ -163,6 +164,17 @@ class srObjAlbumGUI {
 
 
 	public function listPictures() {
+		
+		global $DIC;
+		$toolbar = $DIC->toolbar();
+		$ilCtrl = $DIC->ctrl();
+		
+		$btn_slideshow_start = ilLinkButton::getInstance(); 
+		$btn_slideshow_start->setCaption($this->pl->txt('start_slideshow'), false);
+		$btn_slideshow_start->setUrl($ilCtrl->getLinkTarget($this,  'startSlideShow'));
+		
+		$toolbar->addButtonInstance($btn_slideshow_start);
+		
 		$this->tpl->addJavaScript('./Customizing/global/plugins/Services/Repository/RepositoryObject/PhotoGallery/templates/libs/foundation-5.0.2/js/modernizr.js');
 		$this->tpl->addCss('./Customizing/global/plugins/Services/Repository/RepositoryObject/PhotoGallery/templates/default/clearing.css');
 		$tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/PhotoGallery/templates/default/Picture/tpl.clearing.html', false, true);
@@ -200,6 +212,15 @@ class srObjAlbumGUI {
 		$this->tpl->setContent($tpl->get());
 	}
 
+	public function startSlideShow()
+	{
+		foreach ($this->obj_album->getPictureObjects() as $srObjPicture) 
+		{
+			$images[] = $srObjPicture->getPicturePath();
+		}
+		
+		//@todo nadia:  weiter machen ... 
+	}
 
 	public function managePictures() {
 		if (!ilObjPhotoGalleryAccess::checkManageTabAccess($this->parent_gui->object->getRefId())) {

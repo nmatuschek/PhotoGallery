@@ -45,6 +45,8 @@ class srObjPictureFormGUI extends ilPropertyFormGUI {
 		$this->album = new srObjAlbum($_GET['album_id']);
 		$this->initForm();
 		$this->log = $ilLog;
+		global $DIC;
+		$this->lng = $DIC->language(); 
 	}
 
 

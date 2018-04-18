@@ -89,7 +89,11 @@ class ilObjPhotoGalleryGUI extends ilObjectPluginGUI {
 	 * @var ilAccessHandler
 	 */
 	public $access;
-
+	
+	/**
+	 * @var ilObjPhotoGallerySettings
+	 */
+	public $xpho_settings;
 
 	protected function afterConstructor() {
 		global $tpl, $ilCtrl, $ilAccess, $ilNavigationHistory, $ilTabs;
@@ -100,6 +104,9 @@ class ilObjPhotoGalleryGUI extends ilObjectPluginGUI {
 		$this->ctrl = $ilCtrl;
 		$this->tabs_gui = $ilTabs;
 		$this->pl = ilPhotoGalleryPlugin::getInstance();
+		
+		$this->pl->includeClass('class.ilObjPhotoGallerySettings.php');
+		$this->xpho_settings = new ilObjPhotoGallerySettings($this->ref_id);
 
 		// add a link pointing to this object in footer [The "Permanent Link" in the footer]
 		if ($this->object !== null) {
@@ -232,13 +239,42 @@ class ilObjPhotoGalleryGUI extends ilObjectPluginGUI {
 		$form->addItem($ta);
 		$ta->setValue($this->object->getDescription());
 		$ti->setValue($this->object->getTitle());
+
+		$enable_slideshow = new ilCheckboxInputGUI($this->pl->txt('slideshow_enabled'),'slideshow_enabled');
+		$enable_slideshow->setInfo($this->pl->txt('slideshow_enabled_info'));
+		$enable_slideshow->setChecked($this->xpho_settings->isSlideshowEnabled());
+		
+		$slideshow_seconds = new ilNumberInputGUI($this->pl->txt('slideshow_seconds'), 'slideshow_seconds');
+		$slideshow_seconds->setInfo($this->pl->txt('slideshow_seconds_info'));
+		$slideshow_seconds->setValue($this->xpho_settings->getSlideshowSeconds());
+		$slideshow_seconds->setMinValue(1);
+		$slideshow_seconds->allowDecimals(false);
+		$enable_slideshow->addSubItem($slideshow_seconds);
+		
+		$slideshow_repeat = new ilCheckboxInputGUI($this->pl->txt('slideshow_repeat'),'slideshow_repeat');
+		$slideshow_repeat->setInfo($this->pl->txt('slideshow_repeat_info'));
+		$slideshow_repeat->setChecked((bool)$this->xpho_settings->isSlideshowRepeat());
+		$enable_slideshow->addSubItem($slideshow_repeat);
+		
+		$form->addItem($enable_slideshow);
+		
 		$form->setFormAction($this->ctrl->getFormAction($this));
 		$form->addCommandButton('update', $this->pl->txt('save'));
 		$form->addCommandButton(self::CMD_SHOW_CONTENT, $this->pl->txt('cancel'));
 		$this->tpl->setContent($form->getHTML());
 	}
 
-
+	
+	public function afterUpdate()
+	{
+		$xpho_settings = new ilObjPhotoGallerySettings($this->ref_id);
+		$xpho_settings->setSlideshowEnabled((int)$_POST['slideshow_enabled']);
+		$xpho_settings->setSlideshowSeconds((int)$_POST['slideshow_seconds']);
+		$xpho_settings->setSlideshowRepeat((int)$_POST['slideshow_repeat']);
+		
+		$xpho_settings->saveSettings();
+	}
+	
 	public function saveObject() {
 		if (!$this->access_handler->checkAccess('write', '', $this->object->getRefId())) {
 			ilUtil::sendFailure($this->pl->txt('permission_denied'), true);
